@@ -6,10 +6,12 @@ class FlightsAndPorts {
     static void main(String[] args) {
         def flights = []
         createFlights(flights)
-        // Is there a flight to London that is running late
-        def cap = flights.every {(double)it.passengers / (double)it.capacity >= 0.5}
-        println(cap)
 
+
+        def cap = flights.every {(double)it.passengers / (double)it.capacity >= 0.5}
+        println("Is every flight full at least 50% of its capacity? ${cap ? "Yes" : "No"} ")
+
+        // Is there a flight to London that is running late
         def londonLate = flights.findAll {it.destination == "LON" }.any { it.runningLate}
         println("Is there a flight to London running late? ${londonLate ? "Yes" : "No"}")
 

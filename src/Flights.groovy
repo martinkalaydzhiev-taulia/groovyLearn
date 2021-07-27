@@ -1,8 +1,7 @@
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class FlightsAndPorts {
+class Flights {
     static void main(String[] args) {
         def flights = []
         createFlights(flights)
@@ -86,18 +85,18 @@ class FlightsAndPorts {
     }
 }
 
-class Flight2 {
-    def id
-    def startingLocation
-    def destination
-    def from
-    def arrivalAt
-    def passengers
-    def capacity
-    def runningLate
+    class Flight {
+        def id
+        def startingLocation
+        def destination
+        def from
+        def arrivalAt
+        def passengers
+        def capacity
+        def runningLate
 
-    def description() {
-        println("""
+        def description() {
+            println("""
 ---------------------------------------
 Flight ${id} || ${startingLocation} - ${destination}
 departure: ${from.format(DateTimeFormatter.ofPattern("hh:mm a   dd.MMMM yyyy"))}
@@ -106,10 +105,4 @@ passengers: ${passengers} capacity: ${capacity}
 running late: ${runningLate ? "Yes" : "No"}
 --------------------------------------""")
     }
-}
-
-class Port {
-    def location
-    def flights
-    def capacity
 }

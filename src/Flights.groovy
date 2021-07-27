@@ -10,40 +10,40 @@ class Flights {
         def flights = []
         //createFlights(flights)
         flights << generateFlight("sofmuc1", airports['Sofia'], airports['Munich'],
-                LocalDateTime.of(2021, 07, 05, 10, 45),
-                LocalDateTime.of(2021, 07, 05, 15, 45),
+                    LocalDateTime.of(2021, 07, 05, 10, 45),
+                    LocalDateTime.of(2021, 07, 05, 15, 45),
                 140, 160, false)
                 << generateFlight("sofmuc2", airports['Sofia'], airports['Munich'],
-                LocalDateTime.of(2021, 07, 03, 16, 45),
-                LocalDateTime.of(2021, 07, 03, 18, 45),
+                    LocalDateTime.of(2021, 07, 03, 16, 45),
+                    LocalDateTime.of(2021, 07, 03, 18, 45),
                 160, 160, false)
                 << generateFlight("sofmuc3", airports['Sofia'], airports['Munich'],
-                LocalDateTime.of(2021, 07, 10, 20, 45),
-                LocalDateTime.of(2021, 07, 10, 23, 30),
+                    LocalDateTime.of(2021, 07, 10, 20, 45),
+                    LocalDateTime.of(2021, 07, 10, 23, 30),
                 90, 150, false)
                 << generateFlight("mucsof1", airports['Munich'], airports['Sofia'],
-                LocalDateTime.of(2021, 07, 01, 19, 15),
-                LocalDateTime.of(2021, 07, 01, 21, 35),
+                    LocalDateTime.of(2021, 07, 01, 19, 15),
+                    LocalDateTime.of(2021, 07, 01, 21, 35),
                 113, 180, false)
                 << generateFlight("mucsof2", airports['Munich'], airports['Sofia'],
-                LocalDateTime.of(2021, 07, 10, 9, 00),
-                LocalDateTime.of(2021, 07, 10, 13, 05),
+                    LocalDateTime.of(2021, 07, 10, 9, 00),
+                    LocalDateTime.of(2021, 07, 10, 13, 05),
                 132, 150, true)
                 << generateFlight("mucsof3", airports['Munich'], airports['Sofia'],
-                LocalDateTime.of(2021, 07, 10, 22, 30),
-                LocalDateTime.of(2021, 07, 11, 02, 15),
+                    LocalDateTime.of(2021, 07, 10, 22, 30),
+                    LocalDateTime.of(2021, 07, 11, 02, 15),
                 140, 180, true)
                 << generateFlight("soflon1", airports['Sofia'], airports['London'],
-                LocalDateTime.of(2021, 07, 15, 10, 30),
-                LocalDateTime.of(2021, 07, 15, 13, 00),
+                    LocalDateTime.of(2021, 07, 15, 10, 30),
+                    LocalDateTime.of(2021, 07, 15, 13, 00),
                 180, 180, false)
                 << generateFlight("soflon2", airports['Sofia'], airports['London'],
-                LocalDateTime.of(2021, 07, 11, 19, 50),
-                LocalDateTime.of(2021, 07, 12, 01, 45),
+                    LocalDateTime.of(2021, 07, 11, 19, 50),
+                    LocalDateTime.of(2021, 07, 12, 01, 45),
                 160, 160,true)
                 << generateFlight("lonsof1", airports['London'], airports['Sofia'],
-                LocalDateTime.of(2021, 07, 04, 8, 30),
-                LocalDateTime.of(2021, 07, 04, 12, 05),
+                    LocalDateTime.of(2021, 07, 04, 8, 30),
+                    LocalDateTime.of(2021, 07, 04, 12, 05),
                 80, 160, false)
 
 

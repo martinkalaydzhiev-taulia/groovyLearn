@@ -6,7 +6,8 @@ class FlightsAndPorts {
     static void main(String[] args) {
         def flights = []
         createFlights(flights)
-
+        def passengersToSof = flights.each { it.destination == "SOF"}.collect {it.passengers}.sum()
+        println("Passengers to Sofia - ${passengersToSof}")
 
         def cap = flights.every {(double)it.passengers / (double)it.capacity >= 0.5}
         println("Is every flight full at least 50% of its capacity? ${cap ? "Yes" : "No"} ")

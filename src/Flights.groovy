@@ -49,7 +49,7 @@ class Flights {
 
         flights.groupBy { it.destination}.each {println("$it.key $it.value.id")}
 
-        int passengersToSof = flights.each { it.destination == airports['Sofia']}.collect {it.passengers}.sum()
+        int passengersToSof = flights.findAll { it.destination == airports['Sofia']}.collect {it.passengers}.sum()
         println("Passengers to Sofia - ${passengersToSof}")
 
         boolean isAnyFlightUnderHalfCapacity = flights.every {(double)it.passengers / (double)it.capacity >= 0.5}

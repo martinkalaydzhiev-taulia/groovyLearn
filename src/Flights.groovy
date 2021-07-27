@@ -58,6 +58,10 @@ class Flights {
         // Is there a flight to London that is running late
         boolean isAnyFlightToLondonLate = flights.findAll {it.destination == airports['London'] }.any { it.runningLate}
         println("Is there a flight to London running late? ${isAnyFlightToLondonLate ? "Yes" : "No"}")
+        println("Flights to London running late")
+        flights.findAll {it.runningLate && it.destination == airports['London'] }
+            .each {println(it.toString())}
+
 
 
         int passengersLate = flights.findAll { it.runningLate == true}.collect { it.passengers }.sum()

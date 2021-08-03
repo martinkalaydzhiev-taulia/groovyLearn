@@ -1,19 +1,11 @@
-import groovy.transform.ToString
-
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 class FlightsReporter {
     final static int[] CAPACITIES = new int[] {80, 120, 150, 180, 240}
-    //List<Flight> flights;
-
-    enum Airports {
-        SOFIA, BERLIN, LONDON, NEW_YORK, AMSTERDAM, PARIS
-    }
 
     static List<Flight> getAllFlightsTo(List<Flight> flights, Airports destination) {
-        flights.findAll { it.destination == destination }
+        flights.findAll { (it.destination == destination) }
     }
 
     static List<Flight> getAllFlightsFrom(List<Flight> flights, Airports from) {
@@ -25,15 +17,15 @@ class FlightsReporter {
     }
 
     static int passengerAmount(List<Flight> flights) {
-        flights.collect {it.passengers}.sum() ?: 0
+        flights.collect {it.passengers}.sum() ?: 0 as int
     }
 
     static int passengerAmountTo(List<Flight> flights, Airports to) {
-        flights.findAll {it.destination == to }.collect {it.passengers}.sum() ?: 0
+        flights.findAll {it.destination == to }.collect {it.passengers}.sum() ?: 0 as int
     }
 
     static int passengerAmountFrom(List<Flight> flights, Airports from) {
-        flights.findAll {it.from == from }.collect {it.passengers }.sum() ?: 0
+        flights.findAll {it.from == from }.collect {it.passengers }.sum() ?: 0 as int
     }
 
     static void sortByFlightLength(List<Flight> flights) {
@@ -262,16 +254,4 @@ class FlightsReporter {
                 passengers: passengers, capacity: capacity, runningLate: isLate)
     }
 
-}
-
-@ToString(includeNames = true, includeFields = true)
-class Flight {
-    String id
-    FlightsReporter.Airports from
-    FlightsReporter.Airports destination
-    LocalDateTime departure
-    LocalDateTime arrival
-    int passengers
-    int capacity
-    boolean runningLate
 }

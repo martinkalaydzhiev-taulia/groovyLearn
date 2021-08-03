@@ -1,9 +1,10 @@
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class FlightsAndPorts {
     static void main(String[] args) {
+        Random r = new Random()
+        println(r.nextInt(1))
         def flights = []
         createFlights(flights)
         def passengersToSof = flights.each { it.destination == "SOF"}.collect {it.passengers}.sum()
@@ -41,47 +42,47 @@ class FlightsAndPorts {
 
     static createFlights(def flights) {
         flights << new Flight(
-                id: "sofmuc1", startingLocation: "SOF", destination: "MUC",
-                from: LocalDateTime.of(2021, 07, 05, 10, 45),
-                arrivalAt: LocalDateTime.of(2021, 07, 05, 15, 45),
+                id: "sofmuc1", from: "SOF", destination: "MUC",
+                departure: LocalDateTime.of(2021, 07, 05, 10, 45),
+                arrival: LocalDateTime.of(2021, 07, 05, 15, 45),
                 passengers: 140, capacity:  160, runningLate: false)
 
-        flights << new Flight(id: "sofmuc2", startingLocation: "SOF", destination: "MUC",
-                from: LocalDateTime.of(2021, 07, 03, 16, 45),
-                arrivalAt: LocalDateTime.of(2021, 07, 03, 18, 45),
+        flights << new Flight(id: "sofmuc2", from: "SOF", destination: "MUC",
+                departure: LocalDateTime.of(2021, 07, 03, 16, 45),
+                arrival: LocalDateTime.of(2021, 07, 03, 18, 45),
                 passengers: 160, capacity:  160, runningLate: false)
 
-        flights << new Flight(id: "sofmuc3", startingLocation: "SOF", destination: "MUC",
-                from: LocalDateTime.of(2021, 07, 10, 20, 45),
-                arrivalAt: LocalDateTime.of(2021, 07, 10, 23, 30),
+        flights << new Flight(id: "sofmuc3", from: "SOF", destination: "MUC",
+                departure: LocalDateTime.of(2021, 07, 10, 20, 45),
+                arrival: LocalDateTime.of(2021, 07, 10, 23, 30),
                 passengers: 90, capacity:  150, runningLate: false)
 
-        flights << new Flight(id: "mucsof1", startingLocation: "MUC", destination: "SOF",
-                from: LocalDateTime.of(2021, 07, 01, 19, 15),
-                arrivalAt: LocalDateTime.of(2021, 07, 01, 21, 35),
+        flights << new Flight(id: "mucsof1", from: "MUC", destination: "SOF",
+                departure: LocalDateTime.of(2021, 07, 01, 19, 15),
+                arrival: LocalDateTime.of(2021, 07, 01, 21, 35),
                 passengers: 113, capacity:  180, runningLate: false)
 
-        flights << new Flight(id: "mucsof2", startingLocation: "MUC", destination: "SOF",
-                from: LocalDateTime.of(2021, 07, 10, 9, 00),
-                arrivalAt: LocalDateTime.of(2021, 07, 10, 13, 05),
+        flights << new Flight(id: "mucsof2", from: "MUC", destination: "SOF",
+                departure: LocalDateTime.of(2021, 07, 10, 9, 00),
+                arrival: LocalDateTime.of(2021, 07, 10, 13, 05),
                 passengers: 132, capacity:  150, runningLate: true)
 
-        flights << new Flight(id: "mucsof3", startingLocation: "SOF", destination: "MUC",
-                from: LocalDateTime.of(2021, 07, 10, 22, 30),
-                arrivalAt: LocalDateTime.of(2021, 07, 11, 02, 15),
+        flights << new Flight(id: "mucsof3", from: "SOF", destination: "MUC",
+                departure: LocalDateTime.of(2021, 07, 10, 22, 30),
+                arrival: LocalDateTime.of(2021, 07, 11, 02, 15),
                 passengers: 140, capacity:  180, runningLate: true)
 
-        flights << new Flight(id: "soflon1", startingLocation: "SOF", destination: "LON",
-                from: LocalDateTime.of(2021, 07, 15, 10, 30),
-                arrivalAt: LocalDateTime.of(2021, 07, 15, 13, 00),
+        flights << new Flight(id: "soflon1", from: "SOF", destination: "LON",
+                departure: LocalDateTime.of(2021, 07, 15, 10, 30),
+                arrival: LocalDateTime.of(2021, 07, 15, 13, 00),
                 passengers: 180, capacity:  180, runningLate: false)
-        flights << new Flight(id: "soflon2", startingLocation: "SOF", destination: "LON",
-                from: LocalDateTime.of(2021, 07, 11, 19, 50),
-                arrivalAt: LocalDateTime.of(2021, 07, 12, 01, 45),
+        flights << new Flight(id: "soflon2", from: "SOF", destination: "LON",
+                departure: LocalDateTime.of(2021, 07, 11, 19, 50),
+                arrival: LocalDateTime.of(2021, 07, 12, 01, 45),
                 passengers: 160, capacity:  160, runningLate: true)
-        flights << new Flight(id: "lonsof1", startingLocation: "LON", destination: "SOF",
-                from: LocalDateTime.of(2021, 07, 04, 8, 30),
-                arrivalAt: LocalDateTime.of(2021, 07, 04, 12, 05),
+        flights << new Flight(id: "lonsof1", from: "LON", destination: "SOF",
+                departure: LocalDateTime.of(2021, 07, 04, 8, 30),
+                arrival: LocalDateTime.of(2021, 07, 04, 12, 05),
                 passengers: 80, capacity:  160, runningLate: false)
     }
 }
@@ -108,8 +109,3 @@ running late: ${runningLate ? "Yes" : "No"}
     }
 }
 
-class Port {
-    def location
-    def flights
-    def capacity
-}

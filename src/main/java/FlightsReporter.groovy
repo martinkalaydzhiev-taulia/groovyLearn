@@ -2,7 +2,7 @@ import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 class FlightsReporter {
-    Flights flights
+    FlightList flights
 
     void printFlights() {
         flights.printFlights()

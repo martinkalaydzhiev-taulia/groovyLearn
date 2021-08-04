@@ -1,6 +1,7 @@
 import groovy.transform.ToString
 
 import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
 
 @ToString(includeNames = true, includeFields = true)
 class Flight {
@@ -12,4 +13,8 @@ class Flight {
     int passengers
     int capacity
     boolean runningLate
+
+    int flightLengthInMinutes() {
+        ChronoUnit.MINUTES.between(departure, arrival)
+    }
 }

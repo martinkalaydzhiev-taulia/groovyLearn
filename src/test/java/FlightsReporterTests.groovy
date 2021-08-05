@@ -23,7 +23,7 @@ class FlightsReporterTests {
     @Test
     void getAllFlightsTo() {
         List<Flights> flightsToAmsterdam = []
-        FlightsReporter reporter = new FlightsReporter(flights: new Flights(flightsToAmsterdam))
+        FlightsReporter reporter = new FlightsReporter(new Flights(flightsToAmsterdam as List<Flight>))
         assertEquals(reporter.getAllFlightsTo(Airports.AMSTERDAM).flights, [])
 
         flightsToAmsterdam = [new Flight(id: 1,
@@ -35,8 +35,8 @@ class FlightsReporterTests {
                                       from: Airports.SOFIA, destination: Airports.AMSTERDAM,
                                       departure: LocalDateTime.of(2021, 8, 1, 8, 35),
                                       arrival: LocalDateTime.of(2021, 8, 1, 11, 05),
-                                      passengers: 160, capacity: 180, runningLate: false)]
-        reporter = new FlightsReporter(flights: new Flights(flightsToAmsterdam))
+                                      passengers: 160, capacity: 180, runningLate: false)] as List<Flights>
+        reporter = new FlightsReporter(new Flights(flightsToAmsterdam as List<Flight>))
         assertEquals(reporter.getAllFlightsTo(Airports.AMSTERDAM).flights, [flightsToAmsterdam[0], flightsToAmsterdam[1]])
 
         flightsToAmsterdam << new Flight(id: 3,
@@ -84,74 +84,145 @@ class FlightsReporterTests {
 
     @Test
     void testPassengerAmount() {
-        def fl1 = FlightsReporter.getAllFlightsFrom(flights, FlightsReporter.Airports.NEW_YORK)
-        assert FlightsReporter.getPassengerCount(fl1) == 0
+        FlightsReporter reporter = new FlightsReporter(new Flights([]))
+        assertEquals(reporter.getPassengerCount(), 0)
+        def fl1 = new Flight(id: 4, from: Airports.SOFIA, destination: Airports.BERLIN,
+                departure: LocalDateTime.of(2021, 8, 2, 15, 30),
+                arrival: LocalDateTime.of(2021, 8, 2, 21, 10),
+                passengers: 130, capacity: 150, runningLate: true)
+        def fl2 = new Flight(id: 5, from: Airports.AMSTERDAM, destination: Airports.LONDON,
+                departure: LocalDateTime.of(2021, 8, 1, 14, 45),
+                arrival: LocalDateTime.of(2021, 8, 1, 16, 52),
+                passengers: 90, capacity: 120, runningLate: true)
+        def listOfFlights = [fl1, fl2]
+        reporter.setFlights(listOfFlights)
+        assertEquals(reporter.getPassengerCount(), fl1.passengers + fl2.passengers)
+        assertEquals(reporter.getPassengerCountTo(Airports.BERLIN), 130)
 
-        assert FlightsReporter.getPassengerCount(flights) == 1430
-        assertEquals(FlightsReporter.getPassengerCountTo(flights, FlightsReporter.Airports.NEW_YORK), 360)
-        assertEquals(FlightsReporter.getPassengerCountTo(flights, FlightsReporter.Airports.SOFIA), 230)
-        assertEquals(FlightsReporter.passengerAmountFrom(flights, FlightsReporter.Airports.SOFIA), 460)
-        assertEquals(FlightsReporter.passengerAmountFrom(flights, FlightsReporter.Airports.NEW_YORK), 0)
+        def fl3 = new Flight(id: 3, from: Airports.SOFIA, destination: Airports.LONDON,
+                departure: LocalDateTime.of(2021, 8, 2, 11, 10),
+                arrival: LocalDateTime.of(2021, 8, 2, 14, 10),
+                passengers: 170, capacity: 180, runningLate: false)
+        listOfFlights << fl3
+        reporter.setFlights(listOfFlights)
+        assertEquals(reporter.getPassengerCountTo(Airports.LONDON), fl2.passengers + fl3.passengers)
     }
 
     @Test
     void testSortingByDepartureDate() {
-        def departureExpected = []
-        def fl1 = flights.collect()
-        departureExpected << flights[9] << flights[5] << flights[1] << flights[0] << flights[4] << flights[6]
-                << flights[2] << flights[3] << flights[8] << flights[7]
-        FlightsReporter.sortByDepartureDate(fl1)
-        assertEquals(fl1, departureExpected)
+        def fl1 = new Flight(id: 7, from: Airports.LONDON, destination: Airports.NEW_YORK,
+                departure: LocalDateTime.of(2021, 8, 1, 19, 35),
+                arrival: LocalDateTime.of(2021, 8, 2, 3, 10),
+                passengers: 180, capacity: 180, runningLate: false)
+        def fl2 = new Flight(id: 10, from: Airports.BERLIN, destination: Airports.SOFIA,
+                departure: LocalDateTime.of(2021, 8, 1, 6, 5),
+                arrival: LocalDateTime.of(2021, 8, 1, 10, 10),
+                passengers: 140, capacity: 150, runningLate: true)
+        def fl3 = new Flight(id: 2, from: Airports.SOFIA, destination: Airports.AMSTERDAM,
+                departure: LocalDateTime.of(2021, 8, 1, 8, 35),
+                arrival: LocalDateTime.of(2021, 8, 1, 11, 05),
+                passengers: 160, capacity: 180, runningLate: false)
+        def listOfFlights = [fl1, fl2, fl3]
+        def flightsSortedByDeparture = [fl2, fl3, fl1]
+        FlightsReporter.sortByDepartureDate(listOfFlights)
+        assertEquals(listOfFlights, flightsSortedByDeparture)
     }
 
     @Test
     void testSortingByArrivalDate() {
-        def arrivalExpected = []
-        def fl2 = flights.collect()
-        arrivalExpected << flights[9] << flights[1] << flights[0] << flights[4] << flights[5] << flights[6]
-                << flights[2] << flights[3] << flights[8] << flights[7]
-        FlightsReporter.sortByArrivalDate(fl2)
-        assertEquals(fl2, arrivalExpected)
+        def fl1 = new Flight(id: 7, from: Airports.LONDON, destination: Airports.NEW_YORK,
+                departure: LocalDateTime.of(2021, 8, 1, 19, 35),
+                arrival: LocalDateTime.of(2021, 8, 2, 3, 10),
+                passengers: 180, capacity: 180, runningLate: false)
+        def fl2 = new Flight(id: 10, from: Airports.BERLIN, destination: Airports.SOFIA,
+                departure: LocalDateTime.of(2021, 8, 1, 6, 5),
+                arrival: LocalDateTime.of(2021, 8, 1, 15, 10),
+                passengers: 140, capacity: 150, runningLate: true)
+        def fl3 = new Flight(id: 2, from: Airports.SOFIA, destination: Airports.AMSTERDAM,
+                departure: LocalDateTime.of(2021, 8, 1, 8, 35),
+                arrival: LocalDateTime.of(2021, 8, 1, 11, 05),
+                passengers: 160, capacity: 180, runningLate: false)
+        def listOfFlights = [fl1, fl2, fl3]
+        def flightsSortedByArrival = [fl3, fl2, fl1]
+        FlightsReporter.sortByArrivalDate(listOfFlights)
+        assertEquals(listOfFlights, flightsSortedByArrival)
     }
 
     @Test
     void testSortingByFlightLen() {
-        def flightLenExpected = []
-        def fl1 = flights.collect()
-        flightLenExpected << flights[0] << flights[7] << flights[4] << flights[1] << flights[2] << flights[9]
-                << flights[3] << flights[6] << flights[8] << flights[5]
-        FlightsReporter.sortByFlightLength(fl1)
-        assertEquals(fl1, flightLenExpected)
+        def fl1 = new Flight(id: 7, from: Airports.LONDON, destination: Airports.NEW_YORK,
+                departure: LocalDateTime.of(2021, 8, 1, 19, 35),
+                arrival: LocalDateTime.of(2021, 8, 2, 3, 10),
+                passengers: 180, capacity: 180, runningLate: false)
+        def fl2 = new Flight(id: 10, from: Airports.BERLIN, destination: Airports.SOFIA,
+                departure: LocalDateTime.of(2021, 8, 1, 6, 5),
+                arrival: LocalDateTime.of(2021, 8, 1, 15, 10),
+                passengers: 140, capacity: 150, runningLate: true)
+        def fl3 = new Flight(id: 2, from: Airports.SOFIA, destination: Airports.AMSTERDAM,
+                departure: LocalDateTime.of(2021, 8, 1, 8, 35),
+                arrival: LocalDateTime.of(2021, 8, 1, 11, 05),
+                passengers: 160, capacity: 180, runningLate: false)
+        def listOfFlights = [fl1, fl2, fl3]
+        def flightsSortedByFlightLen = [fl3, fl1, fl2]
+        FlightsReporter.sortByFlightLength(listOfFlights)
+        assertEquals(listOfFlights, flightsSortedByFlightLen)
     }
 
     @Test
     void testGetAllPlanesAboveCapacity() {
-        def expected = []
-        expected << flights[0] << flights[5] << flights[6]
-        assertEquals(FlightsReporter.getAllPlanesAboveCertainCapacityFull(flights, 0.99), expected)
+        //def expected = []
+        //expected << flights[0] << flights[5] << flights[6]
+        //assertEquals(FlightsReporter.getAllPlanesAboveCertainCapacityFull(flights, 0.99), expected)
     }
 
     @Test
     void testRunningLate() {
-        assertEquals(true, FlightsReporter.isThereAFlightRunningLate(flights))
-
-        def flightsLate = []
-        flightsLate << flights[0] << flights[3] << flights[4] << flights[5] << flights[8] << flights[9]
-        assertEquals(flightsLate, FlightsReporter.getFlightsRunningLate(flights))
+        def fl1 = new Flight(id: 4, from: Airports.SOFIA, destination: Airports.BERLIN,
+                departure: LocalDateTime.of(2021, 8, 2, 15, 30),
+                arrival: LocalDateTime.of(2021, 8, 2, 21, 10),
+                passengers: 130, capacity: 150, runningLate: true)
+        def fl2 = new Flight(id: 3, from: Airports.SOFIA, destination: Airports.LONDON,
+                departure: LocalDateTime.of(2021, 8, 2, 11, 10),
+                arrival: LocalDateTime.of(2021, 8, 2, 14, 10),
+                passengers: 170, capacity: 180, runningLate: false)
+        def fl3 = new Flight(id: 1, from: Airports.PARIS, destination: Airports.AMSTERDAM,
+                departure: LocalDateTime.of(2021, 8, 1, 10, 0),
+                arrival: LocalDateTime.of(2021, 8, 1, 11, 10),
+                passengers: 150, capacity: 150, runningLate: true)
+        def listOfFlights = [fl2]
+        FlightsReporter reporter = new FlightsReporter(new Flights(listOfFlights))
+        assertEquals(false, reporter.isThereAFlightRunningLate())
+        assertEquals(reporter.getFlightsRunningLate().flights, [])
+        listOfFlights << fl1 << fl3
+        assertEquals(true, reporter.isThereAFlightRunningLate())
+        assertEquals(false, reporter.getAllFlightsTo(Airports.LONDON).isThereAFlightRunningLate())
+        assertEquals(reporter.getFlightsRunningLate().flights, [fl1, fl3])
     }
 
     @Test
     void testDepartingAfter() {
+        def fl1 = new Flight(id: 4, from: Airports.SOFIA, destination: Airports.BERLIN,
+                departure: LocalDateTime.of(2021, 8, 2, 15, 30),
+                arrival: LocalDateTime.of(2021, 8, 2, 21, 10),
+                passengers: 130, capacity: 150, runningLate: true)
+        def fl2 = new Flight(id: 3, from: Airports.SOFIA, destination: Airports.LONDON,
+                departure: LocalDateTime.of(2021, 8, 2, 11, 10),
+                arrival: LocalDateTime.of(2021, 8, 2, 14, 10),
+                passengers: 170, capacity: 180, runningLate: false)
+        def fl3 = new Flight(id: 1, from: Airports.PARIS, destination: Airports.AMSTERDAM,
+                departure: LocalDateTime.of(2021, 8, 1, 10, 0),
+                arrival: LocalDateTime.of(2021, 8, 1, 11, 10),
+                passengers: 150, capacity: 150, runningLate: true)
+        FlightsReporter reporter = new FlightsReporter(new Flights([]))
+        assertEquals(reporter.getAllFlightsDepartingBefore(LocalDateTime.now().plusDays(10)).flights, [])
+        def listOfFlights = [fl1, fl2, fl3]
+        reporter.setFlights(listOfFlights)
         assertEquals(
-                FlightsReporter.getAllFlightsDepartingBefore(flights,
-                        LocalDateTime.of(2021, 7, 31, 10, 0)), [])
-
-        assertEquals(FlightsReporter.getAllFlightsDepartingBefore(flights,
-                LocalDateTime.of(2021, 8, 2, 12, 0)),
-                [flights[0], flights[1], flights[2], flights[4], flights[5], flights[6], flights[9]])
-
-        def fl = []
-        def flightsRunningLate = FlightsReporter.getFlightsRunningLate(flights).getAllFlightsDepartingBefore()
+                reporter.getAllFlightsDepartingBefore(
+                        LocalDateTime.of(2021, 8, 1, 1, 1)).flights, [])
+        assertEquals(
+                reporter.getAllFlightsDepartingBefore(
+                        LocalDateTime.of(2021, 8, 2, 1, 0)).flights, [fl3])
     }
 
 

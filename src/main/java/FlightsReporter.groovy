@@ -40,7 +40,7 @@ class FlightsReporter {
         flights.getAllFlightsFrom(from)
     }
 
-    FlightList getAllFlightsTo(Airports to) {
+    Flights getAllFlightsTo(Airports to) {
         flights.getAllFlightsTo(to)
     }
 
@@ -76,7 +76,7 @@ class FlightsReporter {
         flights.isThereAFlightRunningLate()
     }
 
-    List<Flight> getFlightsRunningLate() {
+    Flights getFlightsRunningLate() {
         flights.getFlightsRunningLate()
     }
 
@@ -84,7 +84,7 @@ class FlightsReporter {
         flights.getAllFlightsArrivingAfter(date)
     }
 
-    List<Flight> getAllFlightsDepartingBefore(LocalDateTime date) {
+    Flights getAllFlightsDepartingBefore(LocalDateTime date) {
         flights.getAllFlightsDepartingBefore(date)
     }
 

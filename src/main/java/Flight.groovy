@@ -5,7 +5,7 @@ import java.time.temporal.ChronoUnit
 
 @ToString(includeNames = true, includeFields = true)
 class Flight {
-    String id
+    int id
     Airports from
     Airports destination
     LocalDateTime departure

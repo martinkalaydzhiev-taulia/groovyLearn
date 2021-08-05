@@ -11,7 +11,7 @@ class FlightsReporterTests {
 
     @Test
     void testFlightLengthInMinutes() {
-        Flight fl1 = new Flight(id: "SOFLON11", from: Airports.SOFIA, destination: Airports.LONDON,
+        Flight fl1 = new Flight(id: 1, from: Airports.SOFIA, destination: Airports.LONDON,
                 departure: LocalDateTime.of(2021, 8, 3, 10, 30),
                 arrival: LocalDateTime.of(2021, 8, 3, 13, 15),
                 passengers: 100, capacity: FlightGenerator.CAPACITIES[3], runningLate: false)
@@ -23,53 +23,63 @@ class FlightsReporterTests {
     @Test
     void getAllFlightsTo() {
         List<Flights> flightsToAmsterdam = []
-        FlightsReporter reporter = new FlightsReporter(flights: new Flights(flights: flightsToAmsterdam))
-        assertEquals(reporter.getAllFlightsTo(Airports.AMSTERDAM), [])
-        flightsToAmsterdam = [new Flight(id: "1",
-                from: Airports.PARIS,
-                destination: Airports.AMSTERDAM,
+        FlightsReporter reporter = new FlightsReporter(flights: new Flights(flightsToAmsterdam))
+        assertEquals(reporter.getAllFlightsTo(Airports.AMSTERDAM).flights, [])
+
+        flightsToAmsterdam = [new Flight(id: 1,
+                from: Airports.PARIS, destination: Airports.AMSTERDAM,
                 departure: LocalDateTime.of(2021, 8, 1, 10, 0),
                 arrival: LocalDateTime.of(2021, 8, 1, 11, 10),
                 passengers: 150, capacity: 150, runningLate: true),
-                               new Flight(id: "2",
-                                       from: Airports.SOFIA,
-                                       destination: Airports.AMSTERDAM,
-                                       departure: LocalDateTime.of(2021, 8, 1, 8, 35),
-                                       arrival: LocalDateTime.of(2021, 8, 1, 11, 05),
-                                       passengers: 160, capacity: 180, runningLate: false)]
-        reporter = new FlightsReporter(flights: new Flights(flights: flightsToAmsterdam))
-        assertEquals(reporter.getAllFlightsTo(Airports.AMSTERDAM), [flightsToAmsterdam[0], flightsToAmsterdam[1]])
+                              new Flight(id: 2,
+                                      from: Airports.SOFIA, destination: Airports.AMSTERDAM,
+                                      departure: LocalDateTime.of(2021, 8, 1, 8, 35),
+                                      arrival: LocalDateTime.of(2021, 8, 1, 11, 05),
+                                      passengers: 160, capacity: 180, runningLate: false)]
+        reporter = new FlightsReporter(flights: new Flights(flightsToAmsterdam))
+        assertEquals(reporter.getAllFlightsTo(Airports.AMSTERDAM).flights, [flightsToAmsterdam[0], flightsToAmsterdam[1]])
 
-        flightsToAmsterdam.clear()
-        /*
-        def noFlightsToAmsterdam = [new Flight(id: "8",
+        flightsToAmsterdam << new Flight(id: 3,
                 from: Airports.BERLIN,
                 destination: Airports.LONDON,
                 departure: LocalDateTime.of(2021, 8, 3, 20, 0),
                 arrival: LocalDateTime.of(2021, 8, 3, 21, 20),
-                passengers: 140, capacity: 150, runningLate: false),
-                                    new Flight(id: "9",
-                                            from: Airports.PARIS,
-                                            destination: Airports.SOFIA,
-                                            departure: LocalDateTime.of(2021, 8, 2, 18, 0),
-                                            arrival: LocalDateTime.of(2021, 8, 3, 2, 10),
-                                            passengers: 90, capacity: 150, runningLate: true)]
+                passengers: 140, capacity: 150, runningLate: false)
+        reporter.setFlights(flightsToAmsterdam)
 
-        assertNotEquals(reporter.getAllFlightsTo(Airports.AMSTERDAM), noFlightsToAmsterdam)
-        reporter = new FlightsReporter(flights: new Flights(flights: noFlightsToAmsterdam))
-        assertEquals(reporter.getAllFlightsTo(Airports.AMSTERDAM), [])*/
+        assertNotEquals(reporter.getAllFlightsTo(Airports.AMSTERDAM).flights, flightsToAmsterdam)
+        assertEquals(reporter.getAllFlightsTo(Airports.AMSTERDAM).flights, [flightsToAmsterdam[0], flightsToAmsterdam[1]])
     }
 
     @Test
     void testGetAllFlightsFrom() {
-        assert flightsReporter.getAllFlightsFrom(Airports.SOFIA) == [flights[1], flights[2], flights[3]]
+        FlightsReporter reporter = new FlightsReporter(new Flights([]))
+        assertEquals(reporter.getAllFlightsFrom(Airports.NEW_YORK).flights, [])
+        def newYork1 = new Flight(id: 8, from: Airports.NEW_YORK, destination: Airports.LONDON,
+                departure: LocalDateTime.of(2021, 8, 3, 20, 0),
+                arrival: LocalDateTime.of(2021, 8, 3, 21, 20),
+                passengers: 140, capacity: 150, runningLate: false)
 
+        def flightsFromNY = [newYork1]
+        reporter.setFlights(flightsFromNY)
+        assertEquals(reporter.getAllFlightsFrom(Airports.NEW_YORK).flights.size(), 1)
+        assertEquals(reporter.getAllFlightsFrom(Airports.NEW_YORK).flights, flightsFromNY)
 
-        assertEquals(FlightsReporter.getAllFlightsFrom(flights, FlightsReporter.Airports.NEW_YORK), [])
+        def newYork2 = new Flight(id: 6, from: Airports.NEW_YORK, destination: Airports.PARIS,
+                departure: LocalDateTime.of(2021, 8, 1, 7, 5),
+                arrival: LocalDateTime.of(2021, 8, 2, 1, 10),
+                passengers: 180, capacity: 180, runningLate: true)
+        def sofia1 = new Flight(id: 10, from: Airports.BERLIN, destination: Airports.SOFIA,
+                departure: LocalDateTime.of(2021, 8, 1, 6, 5),
+                arrival: LocalDateTime.of(2021, 8, 1, 10, 10),
+                passengers: 140, capacity: 150, runningLate: true)
+        flightsFromNY << sofia1 << newYork2
 
-        assertNotEquals(FlightsReporter.getAllFlightsFrom(flights, FlightsReporter.Airports.BERLIN), [])
-        assertEquals(FlightsReporter.getAllFlightsFrom(flights, FlightsReporter.Airports.PARIS),
-                [flights[0], flights[5], flights[8]])
+        flightsFromNY.flatten()
+        reporter.setFlights(flightsFromNY)
+        assertNotEquals(reporter.getAllFlightsFrom(Airports.NEW_YORK).flights, flightsFromNY)
+        assertEquals(reporter.getAllFlightsFrom(Airports.NEW_YORK).flights.size(), 2)
+        assertEquals(reporter.getAllFlightsFrom(Airports.NEW_YORK).flights, [newYork1, newYork2])
     }
 
     @Test
@@ -148,61 +158,61 @@ class FlightsReporterTests {
     @Before
     void initializeTestData() {
         Flights fl = new Flights()
-        fl.flights = [new Flight(id: "1",
+        fl.flights = [new Flight(id: 1,
                 from: Airports.PARIS,
                 destination: Airports.AMSTERDAM,
                 departure: LocalDateTime.of(2021, 8, 1, 10, 0),
                 arrival: LocalDateTime.of(2021, 8, 1, 11, 10),
                 passengers: 150, capacity: 150, runningLate: true),
-                      new Flight(id: "2",
+                      new Flight(id: 2,
                               from: Airports.SOFIA,
                               destination: Airports.AMSTERDAM,
                               departure: LocalDateTime.of(2021, 8, 1, 8, 35),
                               arrival: LocalDateTime.of(2021, 8, 1, 11, 05),
                               passengers: 160, capacity: 180, runningLate: false),
-                      new Flight(id: "3",
+                      new Flight(id: 3,
                               from: Airports.SOFIA,
                               destination: Airports.LONDON,
                               departure: LocalDateTime.of(2021, 8, 2, 11, 10),
                               arrival: LocalDateTime.of(2021, 8, 2, 14, 10),
                               passengers: 170, capacity: 180, runningLate: false),
-                      new Flight(id: "4",
+                      new Flight(id: 4,
                               from: Airports.SOFIA,
                               destination: Airports.BERLIN,
                               departure: LocalDateTime.of(2021, 8, 2, 15, 30),
                               arrival: LocalDateTime.of(2021, 8, 2, 21, 10),
                               passengers: 130, capacity: 150, runningLate: true),
-                      new Flight(id: "5",
+                      new Flight(id: 5,
                               from: Airports.AMSTERDAM,
                               destination: Airports.LONDON,
                               departure: LocalDateTime.of(2021, 8, 1, 14, 45),
                               arrival: LocalDateTime.of(2021, 8, 1, 16, 52),
                               passengers: 90, capacity: 120, runningLate: true),
-                      new Flight(id: "6",
+                      new Flight(id: 6,
                               from: Airports.PARIS,
                               destination: Airports.NEW_YORK,
                               departure: LocalDateTime.of(2021, 8, 1, 7, 5),
                               arrival: LocalDateTime.of(2021, 8, 2, 1, 10),
                               passengers: 180, capacity: 180, runningLate: true),
-                      new Flight(id: "7",
+                      new Flight(id: 7,
                               from: Airports.LONDON,
                               destination: Airports.NEW_YORK,
                               departure: LocalDateTime.of(2021, 8, 1, 19, 35),
                               arrival: LocalDateTime.of(2021, 8, 2, 3, 10),
                               passengers: 180, capacity: 180, runningLate: false),
-                      new Flight(id: "8",
+                      new Flight(id: 8,
                               from: Airports.BERLIN,
                               destination: Airports.LONDON,
                               departure: LocalDateTime.of(2021, 8, 3, 20, 0),
                               arrival: LocalDateTime.of(2021, 8, 3, 21, 20),
                               passengers: 140, capacity: 150, runningLate: false),
-                      new Flight(id: "9",
+                      new Flight(id: 9,
                               from: Airports.PARIS,
                               destination: Airports.SOFIA,
                               departure: LocalDateTime.of(2021, 8, 2, 18, 0),
                               arrival: LocalDateTime.of(2021, 8, 3, 2, 10),
                               passengers: 90, capacity: 150, runningLate: true),
-                      new Flight(id: "10",
+                      new Flight(id: 10,
                               from: Airports.BERLIN,
                               destination: Airports.SOFIA,
                               departure: LocalDateTime.of(2021, 8, 1, 6, 5),
@@ -210,6 +220,6 @@ class FlightsReporterTests {
                               passengers: 140, capacity: 150, runningLate: true)
         ]
 
-        flightsReporter = new FlightsReporter(flights: fl)
+        flightsReporter = new FlightsReporter(fl)
     }
 }

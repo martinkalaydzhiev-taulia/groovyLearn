@@ -2,7 +2,15 @@ import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 class FlightsReporter {
-    FlightList flights
+    Flights flights
+
+    FlightsReporter(Flights flights) {
+        this.flights = flights
+    }
+
+    void setFlights(List<Flight> fl) {
+        flights.setFlights(fl)
+    }
 
     void printFlights() {
         flights.printFlights()
@@ -28,11 +36,11 @@ class FlightsReporter {
         flights.passengerAmountFrom(from)
     }
 
-    List<Flight> getAllFlightsFrom(Airports from) {
+    Flights getAllFlightsFrom(Airports from) {
         flights.getAllFlightsFrom(from)
     }
 
-    List<Flight> getAllFlightsTo(Airports to) {
+    FlightList getAllFlightsTo(Airports to) {
         flights.getAllFlightsTo(to)
     }
 

@@ -4,16 +4,25 @@ import java.time.temporal.ChronoUnit
 class Flights implements FlightList {
     List<Flight> flights
 
-    List<Flight> getAllFlightsTo(Airports destination) {
-        flights.findAll { (it.destination == destination) }
+    void setFlights(List<Flight> fl) {
+        flights = fl
     }
 
-    List<Flight> getAllFlightsFrom(Airports from) {
-        flights.findAll { it.from == from }
+    boolean equals(Object flights1) {
+        if (Object instanceof Flights)
+            return flights == ((Flights) flights1).flights
     }
 
-    static void printFlights(List<Flight> flights) {
-        flights.each { println(it) }
+    Flights(List<Flight> flights) {
+        this.flights = flights
+    }
+
+    Flights getAllFlightsTo(Airports destination) {
+        new Flights(flights.findAll { (it.destination == destination) })
+    }
+
+    Flights getAllFlightsFrom(Airports from) {
+        new Flights(flights.findAll { it.from == from })
     }
 
     void printFlights() {
@@ -25,7 +34,7 @@ class Flights implements FlightList {
     }
 
     void printFlightsFrom(Airports from) {
-        flights.findAll { it.from == from }.each {println(it)}
+        flights.findAll { it.from == from }.each { println(it) }
     }
 
     int getPassengerCount() {
@@ -57,52 +66,52 @@ class Flights implements FlightList {
     }
 
 
-    List<Flight> getAllPlanesAboveCertainCapacityFull(float percentageFull) {
-        flights.findAll { (double) it.passengers / (double) it.capacity > percentageFull }
+    Flights getAllPlanesAboveCertainCapacityFull(float percentageFull) {
+        new Flights(flights.findAll { (double) it.passengers / (double) it.capacity > percentageFull })
     }
 
     boolean isThereAFlightRunningLate() {
         flights.any { it.runningLate }
     }
 
-    List<Flight> getFlightsRunningLate() {
-        flights.findAll { it.runningLate }
+    Flights getFlightsRunningLate() {
+        new Flights(flights.findAll { it.runningLate })
     }
 
-    List<Flight> getAllFlightsDepartingAfter(LocalDateTime date) {
-        flights.findAll { it.departure >= date }
+    Flights getAllFlightsDepartingAfter(LocalDateTime date) {
+        new Flights(flights.findAll { it.departure >= date })
     }
 
-    List<Flight> getAllFlightsDepartingBefore(LocalDateTime date) {
-        flights.findAll { it.departure < date }
+    Flights getAllFlightsDepartingBefore(LocalDateTime date) {
+        new Flights(flights.findAll { it.departure < date })
     }
 
-    List<Flight> getAllFlightsArrivingBefore(LocalDateTime date) {
-        flights.findAll { it.arrival < date }
+    Flights getAllFlightsArrivingBefore(LocalDateTime date) {
+        new Flights(flights.findAll { it.arrival < date })
     }
 
-    List<Flight> getAllFlightsArrivingAfter(LocalDateTime date) {
-        flights.findAll { it.arrival >= date }
+    Flights getAllFlightsArrivingAfter(LocalDateTime date) {
+        new Flights(flights.findAll { it.arrival >= date })
     }
 
-    List<Flight> getAllFlightsShorterThan(int amountInMinutes) {
-        flights.findAll() { it.flightLengthInMinutes() < amountInMinutes }
+    Flights getAllFlightsShorterThan(int amountInMinutes) {
+        new Flights(flights.findAll() { it.flightLengthInMinutes() < amountInMinutes })
     }
 
-    List<Flight> getAllFlightsLongerThan(int amountInMinutes) {
-        flights.findAll { it.flightLengthInMinutes() > amountInMinutes }
+    Flights getAllFlightsLongerThan(int amountInMinutes) {
+        new Flights(flights.findAll { it.flightLengthInMinutes() > amountInMinutes })
     }
 
-    List<Flight> getAllFlightWithDuration(int duration) {
-        flights.findAll { it.flightLengthInMinutes() == duration }
+    Flights getAllFlightWithDuration(int duration) {
+        new Flights(flights.findAll { it.flightLengthInMinutes() == duration })
     }
 
-    List<Flight> getAllFlightsWithPassengersAbove(int passengerAmount) {
-        flights.findAll { it.passengers >= passengerAmount }
+    Flights getAllFlightsWithPassengersAbove(int passengerAmount) {
+        new Flights(flights.findAll { it.passengers >= passengerAmount })
     }
 
-    List<Flight> getAllFlightsWithPassengersBelow(int passengerAmount) {
-        flights.findAll { it.passengers < passengerAmount }
+    Flights getAllFlightsWithPassengersBelow(int passengerAmount) {
+        new Flights(flights.findAll { it.passengers < passengerAmount })
     }
 
     Flight getFlightWithMostPassengers() {
@@ -113,7 +122,7 @@ class Flights implements FlightList {
         flights.min { it.passengers }
     }
 
-    Flight getFlightByID(String id) {
+    Flight getFlightByID(int id) {
         flights.each {
             if (it.id == id)
                 return it
@@ -121,32 +130,35 @@ class Flights implements FlightList {
         return null
     }
 
-    void changeDestinationForAllTo(Airports from, Airports to) {
+    Flights changeDestinationForAllTo(Airports from, Airports to) {
         flights.each {
             if (it.destination == from)
                 it.destination = to
         }
+        return this
     }
 
-    void changeStartingAirport(Airports from, Airports to) {
+    Flights changeStartingAirport(Airports from, Airports to) {
         flights.each {
             if (it.from == from)
                 it.from == to
         }
+        return this
     }
 
-    void changeDepartureDate(String flightID, LocalDateTime newDate) {
-        flights.find { it.id == flightID }.departure = newDate
+    Flights changeDepartureDate(int flightID, LocalDateTime newDate) {
+        new Flights(flights.find { it.id == flightID }.departure = newDate)
     }
 
-    void changeArrivalDate(String flightID, LocalDateTime newDate) {
-        flights.find { it.id = flightID }.arrival = newDate
+    Flights changeArrivalDate(int flightID, LocalDateTime newDate) {
+        new Flights(flights.find { it.id = flightID }.arrival = newDate)
     }
 
-    void setRunningLateToAllFlightsTo(Airports destination) {
+    Flights setRunningLateToAllFlightsTo(Airports destination) {
         flights.each {
             if (it.destination == destination)
                 it.runningLate = true
         }
+        return this
     }
 }

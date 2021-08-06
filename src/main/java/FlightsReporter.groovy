@@ -1,46 +1,39 @@
+import groovyx.gpars.dataflow.stream.FList
+
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 class FlightsReporter {
-    Flights flights
 
-    FlightsReporter(Flights flights) {
-        this.flights = flights
-    }
-
-    void setFlights(List<Flight> fl) {
-        flights.setFlights(fl)
-    }
-
-    void printFlights() {
+    static void printFlights(Flights flights) {
         flights.printFlights()
     }
 
-    void printFlightsTo(Airports destination) {
+    static void printFlightsTo(Flights flights, Airports destination) {
         flights.printFlightsTo(destination)
     }
 
-    void printFlightsFrom(Airports from) {
+    static void printFlightsFrom(Flights flights, Airports from) {
         flights.printFlightsFrom(from)
     }
 
-    int getPassengerCount() {
+    static int getPassengerCount(Flights flights) {
         flights.getPassengerCount()
     }
 
-    int getPassengerCountTo(Airports to) {
+    static int getPassengerCountTo(Flights flights, Airports to) {
         flights.getPassengerCountTo(to)
     }
 
-    int passengerAmountFrom(Airports from) {
+    static int passengerAmountFrom(Flights flights, Airports from) {
         flights.passengerAmountFrom(from)
     }
 
-    Flights getAllFlightsFrom(Airports from) {
+    static Flights getAllFlightsFrom(Flights flights, Airports from) {
         flights.getAllFlightsFrom(from)
     }
 
-    Flights getAllFlightsTo(Airports to) {
+    static Flights getAllFlightsTo(Flights flights, Airports to) {
         flights.getAllFlightsTo(to)
     }
 
@@ -60,87 +53,87 @@ class FlightsReporter {
         flights.sort { a, b -> a.arrival <=> b.arrival }
     }
 
-    int flightLengthInMinutes(String flightID) {
-        getFlightByID(flightID).flightLengthInMinutes()
+    static int flightLengthInMinutes(Flights flights, String flightID) {
+        getFlightByID(flights, flightID).flightLengthInMinutes()
     }
 
-    Flight getFlightByID(String flightID) {
+    static Flight getFlightByID(Flights flights, String flightID) {
         flights.getFlightByID(flightID)
     }
 
-    List<Flight> getAllPlanesAboveCertainCapacityFull(float percentageFull) {
+    static List<Flight> getAllPlanesAboveCertainCapacityFull(Flights flights, float percentageFull) {
         flights.getAllPlanesAboveCertainCapacityFull(percentageFull)
     }
 
-    boolean isThereAFlightRunningLate() {
+    static boolean isThereAFlightRunningLate(Flights flights) {
         flights.isThereAFlightRunningLate()
     }
 
-    Flights getFlightsRunningLate() {
+    static Flights getFlightsRunningLate(Flights flights) {
         flights.getFlightsRunningLate()
     }
 
-    List<Flight> getAllFlightsDepartingAfter(LocalDateTime date) {
-        flights.getAllFlightsArrivingAfter(date)
+    static Flights getAllFlightsDepartingAfter(Flights flights, LocalDateTime date) {
+        flights.getAllFlightsDepartingAfter(date)
     }
 
-    Flights getAllFlightsDepartingBefore(LocalDateTime date) {
+    static Flights getAllFlightsDepartingBefore(Flights flights, LocalDateTime date) {
         flights.getAllFlightsDepartingBefore(date)
     }
 
-    List<Flight> getAllFlightsArrivingBefore(LocalDateTime date) {
+    static Flights getAllFlightsArrivingBefore(Flights flights, LocalDateTime date) {
         flights.getAllFlightsArrivingBefore(date)
     }
 
-    List<Flight> getAllFlightsArrivingAfter(LocalDateTime date) {
+    static Flights getAllFlightsArrivingAfter(Flights flights, LocalDateTime date) {
         flights.getAllFlightsArrivingAfter(date)
     }
 
-    List<Flight> getAllFlightsShorterThan(int amountInMinutes) {
+    static Flights getAllFlightsShorterThan(Flights flights, int amountInMinutes) {
         flights.getAllFlightsShorterThan(amountInMinutes)
     }
 
-    List<Flight> getAllFlightsLongerThan(int amountInMinutes) {
+    static Flights getAllFlightsLongerThan(Flights flights, int amountInMinutes) {
         flights.getAllFlightsLongerThan(amountInMinutes)
     }
 
-    List<Flight> getAllFlightWithDuration(int duration) {
+    static Flights getAllFlightWithDuration(Flights flights, int duration) {
         flights.getAllFlightWithDuration(duration)
     }
 
-    List<Flight> getAllFlightsWithPassengersAbove(int passengerCount) {
+    static Flights getAllFlightsWithPassengersAbove(Flights flights, int passengerCount) {
         flights.getAllFlightsWithPassengersAbove(passengerCount)
     }
 
-    List<Flight> getAllFlightsWithPassengersBelow(int passengerAmount) {
+    static Flights getAllFlightsWithPassengersBelow(Flights flights, int passengerAmount) {
         flights.getAllFlightsWithPassengersBelow(passengerAmount)
     }
 
-    Flight getFlightWithMostPassengers() {
+    static Flight getFlightWithMostPassengers(Flights flights) {
         flights.getFlightWithMostPassengers()
     }
 
-    Flight getFlightWithLeastPassengers() {
+    static Flight getFlightWithLeastPassengers(Flights flights) {
         flights.getFlightWithLeastPassengers()
     }
 
-    void changeDestinationForAllTo(Airports from, Airports to) {
+    static void changeDestinationForAllTo(Flights flights, Airports from, Airports to) {
         flights.changeDestinationForAllTo(from, to)
     }
 
-    void changeStartingAirport(Airports from, Airports to) {
+    static void changeStartingAirport(Flights flights, Airports from, Airports to) {
         flights.changeStartingAirport(from, to)
     }
 
-    void changeDepartureDate(String flightID, LocalDateTime newDate) {
+    static void changeDepartureDate(Flights flights, String flightID, LocalDateTime newDate) {
         flights.changeDepartureDate(flightID, newDate)
     }
 
-    void changeArrivalDate(String flightID, LocalDateTime newDate) {
+    static void changeArrivalDate(Flights flights, String flightID, LocalDateTime newDate) {
         flights.changeArrivalDate(flightID, newDate)
     }
 
-    void setRunningLateToAllFlightsToAirport(Airports destination) {
+    static void setRunningLateToAllFlightsToAirport(Flights flights, Airports destination) {
         flights.setRunningLateToAllFlightsTo(destination)
     }
 

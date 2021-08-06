@@ -2,15 +2,10 @@ import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 class Flights implements FlightList {
-    List<Flight> flights
+    private List<Flight> flights
 
-    void setFlights(List<Flight> fl) {
-        flights = fl
-    }
-
-    boolean equals(Object flights1) {
-        if (Object instanceof Flights)
-            return flights == ((Flights) flights1).flights
+    List<Flight> getFlights() {
+        flights
     }
 
     Flights(List<Flight> flights) {
@@ -131,19 +126,22 @@ class Flights implements FlightList {
     }
 
     Flights changeDestinationForAllTo(Airports from, Airports to) {
-        flights.each {
+        def flightsChanged = flights.collect()
+
+        flightsChanged.each {
             if (it.destination == from)
                 it.destination = to
         }
-        return this
+        return flightsChanged
     }
 
     Flights changeStartingAirport(Airports from, Airports to) {
-        flights.each {
+        def flightsChanged = flights.collect()
+        flightsChanged.each {
             if (it.from == from)
                 it.from == to
         }
-        return this
+        return flightsChanged
     }
 
     Flights changeDepartureDate(int flightID, LocalDateTime newDate) {
@@ -155,10 +153,11 @@ class Flights implements FlightList {
     }
 
     Flights setRunningLateToAllFlightsTo(Airports destination) {
-        flights.each {
+        def flightsChanged = flights.collect()
+        flightsChanged.each {
             if (it.destination == destination)
                 it.runningLate = true
         }
-        return this
+        return flightsChanged
     }
 }

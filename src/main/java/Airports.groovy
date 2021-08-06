@@ -1,0 +1,3 @@
+enum Airports {
+    SOFIA, BERLIN, LONDON, NEW_YORK, AMSTERDAM, PARIS
+}

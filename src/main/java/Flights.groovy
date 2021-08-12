@@ -3,13 +3,32 @@ import java.time.temporal.ChronoUnit
 
 class Flights implements FlightList {
     private List<Flight> flights
+    private EmailService emailService
 
     List<Flight> getFlights() {
         flights
     }
-
     Flights(List<Flight> flights) {
         this.flights = flights
+    }
+
+    Flights(List<Flight> flights, EmailService emailService) {
+        this.flights = flights
+        this.emailService = emailService
+    }
+
+    void sentEmail() {
+        if (emailService == null) {
+            emailService = new SimpleEmail()
+        }
+        emailService.sentEmail()
+    }
+
+    Flights getAllFlightsToAndSendEmail(Airports destination) {
+        Flights searched = getAllFlightsTo(destination)
+        if (searched.flights.size() > 1)
+            sentEmail()
+        searched
     }
 
     Flights getAllFlightsTo(Airports destination) {

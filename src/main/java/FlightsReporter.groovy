@@ -4,6 +4,7 @@ import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 class FlightsReporter {
+    EmailService emailService
 
     static void printFlights(Flights flights) {
         flights.printFlights()
@@ -33,6 +34,9 @@ class FlightsReporter {
         flights.getAllFlightsFrom(from)
     }
 
+    static Flights getAllFlightsToAndSendEmail(flights, Airports to) {
+        flights.getAllFlightsToAndSendEmail(to)
+    }
     static Flights getAllFlightsTo(Flights flights, Airports to) {
         flights.getAllFlightsTo(to)
     }

@@ -18,9 +18,6 @@ class Flights implements FlightList {
     }
 
     void sentEmail() {
-        if (emailService == null) {
-            emailService = new SimpleEmail()
-        }
         emailService.sentEmail()
     }
 
@@ -32,7 +29,7 @@ class Flights implements FlightList {
     }
 
     Flights getAllFlightsTo(Airports destination) {
-        new Flights(flights.findAll { (it.destination == destination) })
+        new Flights(flights.findAll { (it.destination == destination) }, emailService)
     }
 
     Flights getAllFlightsFrom(Airports from) {

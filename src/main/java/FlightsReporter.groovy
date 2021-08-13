@@ -1,5 +1,3 @@
-import groovyx.gpars.dataflow.stream.FList
-
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
@@ -13,7 +11,7 @@ class FlightsReporter {
     static Flights getFlightsToAndSendEmail(Flights flights, Airports to, EmailService email) {
         def searched = flights.flights.findAll() {it.destination == to }.collect()
         if (searched.size() > 1)
-            email.sentEmail()
+            email.sendEmail()
         searched
     }
 

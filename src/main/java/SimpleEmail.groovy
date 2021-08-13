@@ -1,5 +1,5 @@
 class SimpleEmail implements EmailService {
-    void sentEmail() {
+    void sendEmail() {
         println("Sending email...")
     }
 }

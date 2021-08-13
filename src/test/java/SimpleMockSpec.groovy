@@ -13,8 +13,34 @@ class SimpleMockSpec extends Specification {
         FlightsReporter.getAllFlightsToAndSendEmail(flights, Airports.PARIS)
 
         then:
-        1 * emailService.sentEmail() >> println("ok")
+        1 * emailService.sendEmail() >> println("ok")
+    }
 
+    @Unroll
+    def "testing email service mock on empty flight list"() {
+        given:
+        def emailService = Mock(EmailService)
+        def flights = new Flights([], emailService)
+
+        when:
+        FlightsReporter.getAllFlightsToAndSendEmail(flights, Airports.SOFIA)
+
+        then:
+        0 * emailService.sendEmail()
+    }
+
+    @Unroll
+    def "testing email service for destinations without access"() {
+        given:
+        def emailService = Mock(EmailService)
+        def flights = new Flights([FlightGenerator.generateFlight(["destination": Airports.NEW_YORK]),
+                                   FlightGenerator.generateFlight(["destination": Airports.PARIS])], emailService)
+
+        when:
+        FlightsReporter.getAllFlightsToAndSendEmail(flights, Airports.NEW_YORK)
+
+        then:
+        thrown(DeniedAccessException)
     }
 
     @Unroll
@@ -28,6 +54,6 @@ class SimpleMockSpec extends Specification {
         FlightsReporter.getFlightsToAndSendEmail(flights, Airports.PARIS, emailService)
 
         then:
-        1 * emailService.sentEmail()
+        1 * emailService.sendEmail()
     }
 }

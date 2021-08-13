@@ -1,3 +1,3 @@
 public interface EmailService {
-    void sentEmail();
+    void sendEmail();
 }

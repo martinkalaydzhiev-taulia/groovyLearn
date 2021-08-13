@@ -1,0 +1,3 @@
+class DeniedAccessException extends RuntimeException {
+
+}

@@ -1,3 +1,4 @@
+import java.nio.file.AccessDeniedException
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
@@ -17,14 +18,16 @@ class Flights implements FlightList {
         this.emailService = emailService
     }
 
-    void sentEmail() {
-        emailService.sentEmail()
+    void sendEmail() {
+        emailService.sendEmail()
     }
 
     Flights getAllFlightsToAndSendEmail(Airports destination) {
+        if (destination == Airports.NEW_YORK)
+            throw new DeniedAccessException()
         Flights searched = getAllFlightsTo(destination)
         if (searched.flights.size() > 1)
-            sentEmail()
+            sendEmail()
         searched
     }
 

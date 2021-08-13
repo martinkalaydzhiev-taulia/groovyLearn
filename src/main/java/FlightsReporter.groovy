@@ -2,7 +2,16 @@ import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 class FlightsReporter {
-    //EmailService emailService
+    private static void sendEmail() {
+        println("Sending email from static...")
+    }
+
+    static Flights getFlightsToAndSendEmail(Flights flights, Airports to) {
+        def searched = flights.flights.findAll() {it.destination == to }.collect()
+        if (searched.size() > 1)
+            sendEmail()
+        searched
+    }
 
     static void printFlights(Flights flights) {
         flights.printFlights()

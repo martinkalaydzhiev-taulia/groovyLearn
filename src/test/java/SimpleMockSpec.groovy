@@ -56,4 +56,19 @@ class SimpleMockSpec extends Specification {
         then:
         1 * emailService.sendEmail()
     }
+
+    @Unroll
+    def "test static email service mock"() {
+        given:
+        def flights = new Flights([FlightGenerator.generateFlight(["destination": Airports.PARIS]),
+                                   FlightGenerator.generateFlight(["destination": Airports.PARIS])])
+        def reporter = GroovySpy(FlightsReporter, global: true)
+
+        when:
+        FlightsReporter.getFlightsToAndSendEmail(flights, Airports.PARIS)
+
+        then:
+        1 * FlightsReporter.sendEmail()
+        0 * FlightsReporter.passengerAmountFrom()
+    }
 }

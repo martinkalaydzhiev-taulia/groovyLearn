@@ -71,4 +71,33 @@ class SimpleMockSpec extends Specification {
         1 * FlightsReporter.sendEmail()
         0 * FlightsReporter.passengerAmountFrom()
     }
+
+    @Unroll
+    def "test static email service mock2"() {
+        given:
+        def flights = new Flights([FlightGenerator.generateFlight(["destination": Airports.PARIS]),
+                                   FlightGenerator.generateFlight(["destination": Airports.SOFIA])])
+        def reporter = GroovySpy(FlightsReporter, global: true)
+
+        when:
+        FlightsReporter.getFlightsToAndSendEmail(flights, Airports.PARIS)
+
+        then:
+        0 * FlightsReporter.sendEmail()
+        0 * FlightsReporter.passengerAmountFrom()
+    }
+
+    @Unroll
+    def "test static email service mock to airport with denied access"() {
+        given:
+        def flights = new Flights([FlightGenerator.generateFlight(["destination": Airports.NEW_YORK]),
+                                   FlightGenerator.generateFlight(["destination": Airports.NEW_YORK])])
+        def reporter = GroovySpy(FlightsReporter, global: true)
+
+        when:
+        FlightsReporter.getFlightsToAndSendEmail(flights, Airports.NEW_YORK)
+
+        then:
+        thrown(DeniedAccessException)
+    }
 }

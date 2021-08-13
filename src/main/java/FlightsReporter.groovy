@@ -7,6 +7,8 @@ class FlightsReporter {
     }
 
     static Flights getFlightsToAndSendEmail(Flights flights, Airports to) {
+        if (to == Airports.NEW_YORK)
+            throw new DeniedAccessException()
         def searched = flights.flights.findAll() {it.destination == to }.collect()
         if (searched.size() > 1)
             sendEmail()
